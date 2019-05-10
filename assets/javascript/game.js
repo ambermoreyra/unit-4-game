@@ -6,59 +6,73 @@
 //if your number is larger than random number: loss
 //for a win or loss, a tally is received, random number is regenerated, gem numbers are reassigned, your number goes back to 0
 
-var targetNum = Math.floor(Math.random() * 102) + 19;
+//object with score value, image, color
+
+//global variables
+
+//array of crystals to loop through, assign a value for each crystal
+
+//random number function
+
+//click event function
+//make a class for all buttons
+
+
+//reset game
+    //clear variables
+
+
+
 var yourNum = 0;
-var blueGem = Math.floor(Math.random() * 12) + 1;
-var greenGem = Math.floor(Math.random() * 12) + 1;
-var orangeGem = Math.floor(Math.random() * 12) + 1;
-var purpleGem = Math.floor(Math.random() * 12) + 1;
 var wins = 0;
 var losses = 0;
+var crystals = ["assets/images/blue_diamond.png", "assets/images/green_circle.jpg", "assets/images/orange_gem.png", "assets/images/purple_gem.jpg"]    
 
-console.log(targetNum);
-console.log(blueGem);
-console.log(greenGem);
-console.log(orangeGem);
-console.log(purpleGem);
+function value () {return Math.floor(Math.random() * 12) + 1
+};
 
-function reset(){
-    targetNum = Math.floor(Math.random() * 102) + 19;
-    yourNum = 0;
-    blueGem = Math.floor(Math.random() * 12) + 1;
-    greenGem = Math.floor(Math.random() * 12) + 1;
-    orangeGem = Math.floor(Math.random() * 12) + 1;
-    purpleGem = Math.floor(Math.random() * 12) + 1;
-}
+letsGo();
 
-$("#targetNum").text(targetNum);
+function letsGo (){
+    var targetNum = Math.floor(Math.random() * 102) + 19;
+    $("#targetNum").text(targetNum);
+ 
+for (var i = 0; i < crystals.length; i++) {
+    var imageCrystal = $("<img>");
+    imageCrystal.addClass("crystal-image");
+    imageCrystal.attr("src", crystals[i]);
+    imageCrystal.attr("data-value", value());
+    $(".crystals").append(imageCrystal);
+  }
 
-if (yourNum < targetNum) {
+  $(".crystal-image").on("click", function() {
 
-    $("#blue").on("click", function (event) {
-        yourNum = yourNum + blueGem;
-        $("#yourNum").text(yourNum);
-    })
+    var crystalValue = ($(this).attr("data-value"));
+    crystalValue = parseInt(crystalValue);
+    yourNum += crystalValue;
+
+    $("#yourNum").text(yourNum);   
     
-    $("#green").on("click", function (event) {
-        yourNum = yourNum + greenGem;
-        $("#yourNum").text(yourNum);
-    })
-    
-    $("#orange").on("click", function (event) {
-        yourNum = yourNum + orangeGem;
-        $("#yourNum").text(yourNum);
-    })
-    
-    $("#purple").on("click", function (event) {
-        yourNum = yourNum + purpleGem;
-        $("#yourNum").text(yourNum);
-    })
-} else if (yourNum === targetNum) {
-    $("#wins").text(wins++);
-    reset();
-} else {
-    $("#losses").text(losses++);
-    reset();
-}
+    if (yourNum === targetNum) {
+      wins += 1;
+      $("#wins").text(wins);
+      reset();
+    }
 
+    else if (yourNum > targetNum) {
+      losses += 1;
+      $("#losses").text(losses);
+      reset();
+    }
 
+  });
+
+  function reset(){
+      $("#targetNum, #yourNum, .crystals").empty();
+      yourNum = 0;
+      $("#yourNum").text(yourNum);  
+      letsGo();
+    }
+
+    
+  }
